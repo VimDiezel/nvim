@@ -1,0 +1,36 @@
+-- Keymaps are automatically loaded on the VeryLazy event
+-- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+-- Add any additional keymaps here
+
+-- use `vim.keymap.set` instead
+local map = LazyVim.safe_keymap_set
+
+vim.keymap.del("n", "<c-/>")
+vim.keymap.del("n", "<leader>fT")
+vim.keymap.del("n", "<leader>ft")
+vim.keymap.del("n", "<c-_>")
+
+-- vim.keymap.set("n", "<C-/>", function()
+--   Snacks.terminal("pwsh -NoLogo") -- Open terminal with PowerShell
+-- end, { desc = "Floating Terminal" })
+--
+-- vim.keymap.set("n", "<C-_>", function()
+--   Snacks.terminal("pwsh -NoLogo")
+-- end, { desc = "Floating Terminal (PowerShell)" })
+
+-- floating terminal
+map("n", "<leader>fT", function()
+  Snacks.terminal("pwsh -NoLogo")
+end, { desc = "Terminal (cwd)" })
+
+map("n", "<leader>ft", function()
+  Snacks.terminal("pwsh -NoLogo", { cwd = LazyVim.root() })
+end, { desc = "Terminal (Root Dir)" })
+
+map("n", "<c-/>", function()
+  Snacks.terminal("pwsh -NoLogo")
+end, { desc = "Terminal (cwd)" })
+
+map("n", "<c-_>", function()
+  Snacks.terminal("pwsh -NoLogo")
+end, { desc = "which_key_ignore" })
