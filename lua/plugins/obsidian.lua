@@ -14,6 +14,9 @@ return {
   ---@module 'obsidian'
   ---@type obsidian.config
   opts = {
+
+    legacy_commands = false, -- disables old camelCase commands
+
     workspaces = {
       {
         name = "Home",
@@ -23,6 +26,7 @@ return {
 
     -- Optional, for templates (see below).
     templates = {
+      substitutions = {},
       folder = "Temp",
       date_format = "%a, %d/%m/%Y",
       time_format = "%H:%M",
@@ -85,42 +89,37 @@ return {
     --  * "prepend_note_path", e.g. '[[foo-bar.md|Foo Bar]]'
     --  * "use_path_only", e.g. '[[foo-bar.md]]'
     -- Or you can set it to a function that takes a table of options and returns a string, like this:
-    wiki_link_func = function(opts)
-      return require("obsidian.util").wiki_link_id_prefix(opts)
-    end,
-
-    -- Optional, customize how markdown links are formatted.
-    markdown_link_func = function(opts)
-      return require("obsidian.util").markdown_link(opts)
-    end,
+    -- wiki_link_func = function(opts)
+    --   return require("obsidian.util").wiki_link_id_prefix(opts)
+    -- end,
 
     -- Either 'wiki' or 'markdown'.
-    preferred_link_style = "wiki",
+    link_style = "wiki", -- or "markdown"
 
     -- Optional, boolean or a function that takes a filename and returns a boolean.
     -- `true` indicates that you don't want obsidian.nvim to manage frontmatter.
-    disable_frontmatter = false,
+    frontmatter_enabled = false,
 
     -- Optional, alternatively you can customize the frontmatter data.
-    ---@return table
-    note_frontmatter_func = function(note)
-      -- Add the title of the note as an alias.
-      if note.title then
-        note:add_alias(note.title)
-      end
-
-      local out = { id = note.id, aliases = note.aliases, tags = note.tags }
-
-      -- `note.metadata` contains any manually added fields in the frontmatter.
-      -- So here we just make sure those fields are kept in the frontmatter.
-      if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
-        for k, v in pairs(note.metadata) do
-          out[k] = v
-        end
-      end
-
-      return out
-    end,
+    ------@return table
+    ---note_frontmatter_func = function(note)
+    ---  -- Add the title of the note as an alias.
+    ---  if note.title then
+    ---    note:add_alias(note.title)
+    ---  end
+    ---
+    ---  local out = { id = note.id, aliases = note.aliases, tags = note.tags }
+    ---
+    ---  -- `note.metadata` contains any manually added fields in the frontmatter.
+    ---  -- So here we just make sure those fields are kept in the frontmatter.
+    ---  if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
+    ---    for k, v in pairs(note.metadata) do
+    ---      out[k] = v
+    ---    end
+    ---  end
+    ---
+    ---  return out
+    ---end,
 
     -- see below for full list of options 👇
     ui = {
@@ -148,9 +147,9 @@ return {
   },
 
   keys = {
-    { "<leader>on", "<cmd>ObsidianNew<CR>", desc = "Create a new Obsidian note file" },
-    { "<leader>od", "<cmd>ObsidianToday<CR>", desc = "Create or open today's daily note file" },
-    { "<leader>of", "<cmd>ObsidianQuickSwitch<CR>", desc = "Quickly switch to another Obsidian note" },
-    { "<leader>ot", "<cmd>ObsidianTags<CR>", desc = "Open list of all tags to search or insert to current note" },
+    { "<leader>on", "<cmd>Obsidian new<CR>", desc = "Create a new Obsidian note file" },
+    { "<leader>od", "<cmd>Obsidian today<CR>", desc = "Create or open today's daily note file" },
+    { "<leader>of", "<cmd>Obsidian quick_switch<CR>", desc = "Quickly switch to another Obsidian note" },
+    { "<leader>ot", "<cmd>Obsidian tags<CR>", desc = "Open list of all tags to search or insert to current note" },
   },
 }
